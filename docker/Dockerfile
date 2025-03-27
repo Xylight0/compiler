@@ -5,7 +5,7 @@
 FROM ursamajorlab/jammy-python:3.13
 
 # Setup timezone
-ENV TZ=Europe/Berlin
+ENV TZ Europe/Berlin
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 # Install required packages here
@@ -48,8 +48,12 @@ RUN chmod 1777 /home
 # Setup locale
 RUN locale-gen en_US.UTF-8
 RUN update-locale LANG=en_US.UTF-8 LANGUAGE=en_US.UTF-8
-ENV LANG=en_US.UTF-8
-ENV LANGUAGE=en_US.UTF-8
+ENV LANG en_US.UTF-8
+ENV LANGUAGE en_US.UTF-8
+
+RUN python -m ensurepip --upgrade --root /usr/local --verbose
+RUN ln -s /usr/local/bin/pip3.12 /usr/local/bin/pip
+RUN ln -s /usr/local/bin/pip3.12 /usr/local/bin/pip3
 
 COPY docker/install-iwasm-linux.sh /install-iwasm-linux.sh
 RUN bash /install-iwasm-linux.sh
@@ -57,11 +61,6 @@ RUN bash /install-iwasm-linux.sh
 RUN mkdir -p /cc-support/wasm-support
 COPY ./requirements.txt /cc-support/requirements.txt
 COPY ./package.json /cc-support/package.json
-
-RUN python -m ensurepip --upgrade --root /usr/local --verbose
-RUN ln -s /usr/local/bin/pip3.13 /usr/local/bin/pip
-RUN ln -s /usr/local/bin/pip3.13 /usr/local/bin/pip3
-
 RUN pip install -r /cc-support/requirements.txt
 RUN cd /cc-support && npm install && \
   ln -s /cc-support/node_modules/.bin/pyright /usr/local/bin/pyright

@@ -18,11 +18,7 @@ elif [ $ecode != 1 ]; then
     exit 1
 fi
 
-BWLEHRPOOL_DIR=/home/student/cc-support/repo/
 PYRIGHT=node_modules/.bin/pyright
-if [ -d $BWLEHRPOOL_DIR ]; then
-    PYRIGHT=$BWLEHRPOOL_DIR/$PYRIGHT
-fi
 if [ ! -x "$PYRIGHT" -o -d /cc-support ]; then
     PYRIGHT=pyright
 fi

@@ -275,6 +275,7 @@
     <field name="warning_threshold" type="DecimalField">0.00</field>
     <field name="only_trainers_publish" type="BooleanField">False</field>
     <field name="jplag_up_to_date" type="BooleanField">False</field>
+    <field name="hide_solutions_of_expired_tasks" type="BooleanField">False</field>
   </object>
   <object model="checker.scriptchecker" pk="1">
     <field name="created" type="DateTimeField">2024-03-19T16:40:26.363153</field>
