@@ -1,0 +1,47 @@
+module LangFun
+{
+    unaryop = USub | Not
+    binaryop = Add | Sub | Mul
+             | Less | LessEq | Greater | GreaterEq | Eq | NotEq | Is
+             | And | Or
+
+    ty = Int | Bool | Array(ty elemTy) | Fun(ty* params, resultTy result)
+       | Class(ident name) | Interface(ident name)
+
+    resultTy = NotVoid(ty) | Void
+    scope = Var | UserFun | BuiltinFun
+    funParam = FunParam(ident var, ty ty)
+
+    exp =
+          IntConst(int value)
+        | BoolConst(bool value)
+        | Name(ident var, scope? scope)        -- scope is added by the type checker
+        | Call(exp fun, exp* args)             -- print, input_int, len, and more
+        | UnOp(unaryop op, exp arg)
+        | BinOp(exp left, binaryop op, exp right)
+        | ArrayInitDyn(exp len, exp elemInit)   -- 5 * [0]
+        | ArrayInitStatic(exp* elemInit)        -- [1,2,3]
+        | Subscript(exp array, exp index)       -- x[1]
+        | Closure(funParam* params, exp body)
+        attributes(resultTy? ty)                -- added by the type checker
+
+    stmt =
+        StmtExp(exp)
+        | Assign(ident var, exp right)
+        | IfStmt(exp cond, stmt* thenBody, stmt* elseBody)
+        | WhileStmt(exp cond, stmt* body)
+        | SubscriptAssign(exp left, exp index, exp right)   -- x[1][2] = ...
+        | Return(exp? result)
+
+    fun = FunDef(ident name, funParam* params, resultTy result, stmt* body)
+
+    fieldDecl = FieldDecl(ty ty, ident name)
+    methodSig = MethodSig(ident name, funParam* params, resultTy result)
+    methodDecl = MethodDecl(methodSig sig, stmt* body)
+    classDecl = ClassDecl(ident name, ident? extends, ident* implements,
+                          fieldDecl* fields, methodDecl* methods)
+    interfaceDecl = InterfaceDecl(ident name, methodSig* methods)
+
+    mod = Module(interfaceDecl* interfaces, classDecl* classes,
+                 fun* funs, stmt* stmts)
+}

@@ -1,0 +1,25 @@
+#!/bin/bash
+
+cd $(dirname $0)/..
+
+if command -v ggrep >/dev/null 2>/dev/null; then
+    GREP=ggrep
+else
+    GREP=grep
+fi
+
+$GREP -r -e '#\s*\(type\|pyright\):\s*ignore' src
+ecode=$?
+
+if [ $ecode = 0 ]; then
+    echo 'ERROR: "# type: ignore" and "# pyright: ignore" directives are not allowed!'
+    exit 1
+elif [ $ecode != 1 ]; then
+    exit 1
+fi
+
+PYRIGHT=node_modules/.bin/pyright
+if [ ! -x "$PYRIGHT" -o -d /cc-support ]; then
+    PYRIGHT=pyright
+fi
+$PYRIGHT "$@"

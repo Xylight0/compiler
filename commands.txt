@@ -1,0 +1,3 @@
+- scripts/check
+- scripts/run-tests 
+- scripts/run-tests -k 'test_compiler[var'
