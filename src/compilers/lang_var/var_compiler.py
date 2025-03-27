@@ -18,3 +18,6 @@ def compileModule(m: mod, cfg: CompilerConfig) -> WasmModule:
     data=[],
     funcTable=WasmFuncTable([]),
     funcs=[WasmFunc(idMain, [], None, locals, instrs)])
+    
+def compileStmts(stmts: list[stmt]) -> list[WasmInstr]: 
+    
