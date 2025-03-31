@@ -1,7 +1,20 @@
+Run:
 - scripts/check
 - scripts/run-tests 
 - scripts/run-tests -k 'test_compiler[var'
+
+General: 
 - git remote -v
 - git branch
 - git checkout <name>
+
+Update Repo: 
+- git checkout main
+- git fetch upstream      
+- git rebase upstream/main         
+- GIT_EDITOR=true git rebase --continue
+- git push origin main (--force)     
+
+Cancel process:
+- git rebase --abord
 - git reset --hard origin/main 
