@@ -1,3 +1,6 @@
 - scripts/check
 - scripts/run-tests 
 - scripts/run-tests -k 'test_compiler[var'
+- git remote -v
+- git branch
+- git checkout <name>
