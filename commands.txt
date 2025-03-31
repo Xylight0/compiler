@@ -4,3 +4,4 @@
 - git remote -v
 - git branch
 - git checkout <name>
+- git reset --hard origin/main 
