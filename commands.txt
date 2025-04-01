@@ -1,4 +1,5 @@
 Run:
+- docker run -v .:/cc -ti skogsbaer/compiler-construction-wasm_linux-arm64:latest bash
 - scripts/check
 - scripts/run-tests 
 - scripts/run-tests -k 'test_compiler[var'
