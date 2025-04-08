@@ -11,10 +11,15 @@ General:
 
 Update Repo: 
 - git checkout main
-- git fetch upstream      
+- git fetch upstream     
+//don't use rebase
 - git rebase upstream/main         
 - GIT_EDITOR=true git rebase --continue
-- git push origin main (--force)     
+- git push origin main (--force)   
+//merge 
+- git pull upstream main 
+
+
 
 Cancel process:
 - git rebase --abord
