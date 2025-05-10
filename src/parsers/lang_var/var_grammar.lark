@@ -1,0 +1,37 @@
+%import common (NEWLINE, WS_INLINE, SH_COMMENT, CNAME, INT, LPAR, RPAR, COMMA)
+%ignore WS_INLINE
+%ignore SH_COMMENT
+
+// Start symbol
+lvar: stmt_list
+
+// List of statements
+stmt_list: (NEWLINE* stmt NEWLINE)+
+
+// Statement definition
+stmt: assign | expr_stmt
+
+// Assignment
+assign: CNAME "=" exp         -> assign
+
+//Expression statement
+expr_stmt: exp                -> expr_stmt
+
+// Expression Rules
+exp2: INT                     -> const
+    | CNAME "(" args? ")"     -> call  
+    | CNAME                   -> var
+    | "-" exp2                -> uminus 
+    | "(" exp ")"            
+
+// Multiplication: left associative
+exp1: exp1 "*" exp2 -> mul
+    | exp2               
+
+// Addition/subtraction: left associative
+exp: exp "+" exp1 -> add
+   | exp "-" exp1 -> sub
+   | exp1                 
+
+// Argument list for function calls
+args: exp ("," exp)*
