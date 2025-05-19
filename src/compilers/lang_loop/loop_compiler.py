@@ -5,9 +5,6 @@ from common.compilerSupport import *
 
 #! I added comments throughout the code to explain my thought process and understanding.
 
-labelCounter = 0
-
-
 def compileModule(m: mod, cfg: CompilerConfig) -> WasmModule:
     """
     Compiles the given module.
@@ -41,13 +38,6 @@ def tyToWasmValueType(y: ty) -> Literal["i32", "i64"]:
 def identToWasmId(x: Ident) -> WasmId:
     """Converts an Lvar Identifier to a WasmId."""
     return WasmId(f"${x.name}")
-
-
-def newLabel(prefix: str) -> WasmId:
-    """Generates a new WasmId label."""
-    global labelCounter
-    labelCounter += 1
-    return WasmId(f"${prefix}_{labelCounter}")
 
 
 def compileStmts(stmts: list[stmt]) -> list[WasmInstr]:
@@ -92,9 +82,9 @@ def compileStmt(stmt: stmt) -> list[WasmInstr]:
             return instrs
 
         case WhileStmt(cond, body):
-            # 1. generate unique labels
-            block_label = newLabel("while_block")
-            loop_label = newLabel("while_loop")
+            # 1. generate labels
+            block_label = WasmId(f"$while_block")
+            loop_label = WasmId(f"$while_loop")
             # 2. Compile body statements separately
             instrs_body = compileStmts(body)
             # assemble the loop body instructions
