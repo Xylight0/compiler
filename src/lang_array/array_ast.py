@@ -1,4 +1,3 @@
-# AUTOMATICALLY GENERATED (2024-03-01 17:42:38)
 from __future__ import annotations
 from dataclasses import dataclass
 

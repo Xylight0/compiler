@@ -52,16 +52,15 @@ def compileStmt(stmt: stmt) -> list[WasmInstr]:
 
         case StmtExp(e):
             # 1. Compile the expression.
-            expInstrs, leavesValueOnStack = compileExpValue(e)
+            expInstrs = compileExpValue(e)
             # 2. If the expression leaves a value on the stack (e.g., input_int(), x + y),
             #    and the statement context doesn't use it, we must drop it ensuring the stack is in the correct state (cleared) for the next operation.
             #    Functions like print() consume their argument and don't leave a value.
-            if leavesValueOnStack:
-                expInstrs.append(WasmInstrDrop())
+            
             return expInstrs
 
 
-def compileExpValue(e: exp) -> tuple[list[WasmInstr], bool]:
+def compileExpValue(e: exp) -> list[WasmInstr]:
     """
     Compiles an expression and returns the instructions and a boolean
     indicating if a value is left on the Wasm stack.
@@ -72,7 +71,7 @@ def compileExpValue(e: exp) -> tuple[list[WasmInstr], bool]:
     match e:
         case Call(Ident("print"), _):
             # The 'call $print_i64' instruction consumes the argument and pushes no result.
-            return instrs, False
+            return instrs
         case (
             IntConst(_)
             | Name(_)
@@ -81,7 +80,7 @@ def compileExpValue(e: exp) -> tuple[list[WasmInstr], bool]:
             | Call(Ident("input_int"), _)
         ):
             # All other currently supported expressions leave an i64 value on the stack.
-            return instrs, True
+            return instrs
         case Call(name, _):
             raise Exception(f"Unsupported function call in expression: {name.name}")
 
